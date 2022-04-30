@@ -288,7 +288,7 @@ ALU ALU1 (
 
 
 DataMem DM1(
-  .DataAddress  (ALU1_Out_out),
+  .DataAddress  (RF1_DataOutA_out),
   .WriteEn      (Ctrl1_MemWrEn_out),
   .DataIn       (RF1_DataOutB_out),
   .DataOut      (DM1_DataOut_out),

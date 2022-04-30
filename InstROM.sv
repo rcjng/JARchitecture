@@ -59,13 +59,35 @@ always_comb begin
 
     11 : InstOut = 'b10_0100_001; // move $1
 
-    12 : InstOut = 'b0_0000_000; // seti #-1
+    12 : InstOut = 'b0_0000_000; // seti #0
 
     13 : InstOut = 'b10_1011_000; // setlt $0
     
-    14 : InstOut = 'b11_1_000000; // bl 00_0000
+    14 : InstOut = 'b11_1_000000; // bl LUT1 Entry0
 
-    15 : InstOut = '1;  // halt
+    15 : InstOut = 'b0_0000_111; // seti #7
+
+    16 : InstOut = 'b10_0100_011; // move $3
+
+    17 : InstOut = 'b0_0000_010; // seti #2
+
+    18 : InstOut = 'b10_0000_010; // add $2
+
+    19 : InstOut = 'b10_0011_011; // store $3
+
+    20 : InstOut = 'b0_0000_010; // seti #2
+
+    21 : InstOut = 'b10_0010_011; // load $3
+
+    22 : InstOut = 'b10_0100_010; // move $2
+
+    23 : InstOut = 'b0_0000_011; // seti #3
+
+    24 : InstOut = 'b10_0000_010; // add $2
+
+    25 : InstOut = 'b10_0100_010; // move $2
+
+    26 : InstOut = '1;  // halt
 
     // (default case already covered by opening statement)
   endcase
