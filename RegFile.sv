@@ -1,7 +1,7 @@
-// Create Date:    2019.01.25
-// Last Update:    2022.01.13
-// Design Name:    CSE141L
-// Module Name:    reg_file 
+// Create Date:   2019.01.25
+// Last Update:   2022.04.30
+// Design Name:   JARchitecture Register File
+// Module Name:   RegFile
 //
 // Additional Comments: 					  $clog2
 
@@ -69,6 +69,5 @@ always_ff @ (posedge Clk) begin
     Registers[Waddr] <= DataIn;
   end
 end
-
 
 endmodule

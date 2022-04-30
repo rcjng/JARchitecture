@@ -1,5 +1,6 @@
 // Create Date:   2017.01.25
-// Design Name:   TopLevel Test Bench
+// Last Update:   2022.04.30
+// Design Name:   JARchitecture Top Level Testbench
 // Module Name:   TopLevel_tb.v
 // CSE141L
 
@@ -48,10 +49,7 @@ initial begin
   // Wait for done flag, then display results
   wait (Ack);
   #10 $display("------------------------------------------");
-  #10 $displayh(DUT.DM1.Core[0],
-                DUT.DM1.Core[1],"_",
-                DUT.DM1.Core[2],
-                DUT.DM1.Core[3]);
+  #10 $display("r2 = %d", DUT.RF1.Registers[2]);
       $display("last instruction = %d || sim time %t",DUT.PC1.ProgCtr,$time);
 
   // Note: $stop acts like a breakpoint, pausing the simulation

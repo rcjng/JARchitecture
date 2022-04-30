@@ -1,7 +1,7 @@
 // Test bench
 // Program Counter (Instruction Fetch)
 
-module ALU_tb;
+module ProgCtr_tb;
 
 timeunit 1ns/1ps;
 
@@ -12,7 +12,8 @@ bit Clk;
 bit BranchAbsEn;
 bit BranchRelEn;
 bit ALU_flag;
-bit [9:0] TargetOrOffset;
+bit [7:0] RelTarget;
+bit [9:0] AbsTarget;
 logic [9:0] NextInstructionIndex;
 
 // Instatiate and connect the Unit Under Test
@@ -23,7 +24,8 @@ ProgCtr uut (
   .BranchAbsEn(BranchAbsEn),
   .BranchRelEn(BranchRelEn),
   .ALU_flag(ALU_flag),
-  .Target(TargetOrOffset),
+  .RelTarget(RelTarget),
+  .AbsTarget(AbsTarget),
   .ProgCtr(NextInstructionIndex)
 );
 
@@ -43,7 +45,8 @@ initial begin
   BranchAbsEn = '0;
   BranchRelEn = '0;
   ALU_flag = '0;
-  TargetOrOffset = '0;
+  RelTarget = '0;
+  AbsTarget = '0;
 
   // Advance to simulation time 1, latch values
   #1 Clk = '1;
@@ -89,7 +92,7 @@ initial begin
   $display("Checking that no branch advanced by 1");
   assert (NextInstructionIndex == 'd001);
   BranchAbsEn = '1;
-  TargetOrOffset = 'd10;
+  AbsTarget = 'd10;
 
   // Latch, check, setup next test
   #1 Clk = '1;
@@ -98,33 +101,40 @@ initial begin
   assert (NextInstructionIndex == 'd10);
   BranchAbsEn = '0;
   BranchRelEn = '1;
-  TargetOrOffset = 'd5;
+  RelTarget = 'd5;
   // note, ALU_flag still 0
 
   // Latch, check, setup next test
   #1 Clk = '1;
   #1 Clk = '0;
-  $display("Checking that relative branch with no ALU flag did not jump");
-  assert (NextInstructionIndex == 'd11);
+  $display("Checking that relative branch with no ALU flag did jump");
+  assert (NextInstructionIndex == 'd15);
   BranchAbsEn = '0;
   BranchRelEn = '1;
-  TargetOrOffset = 'd5;
+  RelTarget = 'd5;
   ALU_flag = '1;
 
   // Latch, check, setup next test
   #1 Clk = '1;
   #1 Clk = '0;
-  $display("Checking that relative branch with ALU flag did jump");
+  $display("Checking that relative branch with ALU flag did not jump");
   assert (NextInstructionIndex == 'd16);
 
-
   // new tests we wrote
-  Start = '1;
-  Clk = '1;
-  Clk = '0;
-  Start = '0;
+  #1 Clk = '1;
+  #1 Clk = '0;
   $display("Checking that pc increments correctly");
   assert (NextInstructionIndex == 'd17)
+  ALU_flag = '0;
+  BranchAbsEn = '0;
+  BranchRelEn = '1;
+  RelTarget = 8'b11111011;
+
+  #1 Clk = '1;
+  #1 Clk = '0;
+  $display("Checking that relative branch went back");
+  assert (NextInstructionIndex == 'd12);
+  
 
   //BranchAbsEn, // jump unconditionally to Target value
   //                     BranchRelEn, // jump conditionally to Target + PC

@@ -26,7 +26,7 @@ module InstROM #(parameter A=10, W=9) (
 // written or any way of automatically generating machine code.
 //
 // This is usually the fastest / easiest way to test individual instructions.
-/*
+
 always_comb begin 
   InstOut = 'b000_000_000;       // default
   case (InstAddress)
@@ -35,29 +35,42 @@ always_comb begin
     // MEM[0] = 16
     // MEM[16] = 254
 
-    // opcode = 3 load, rs = 1, rt = 0, reg[rs] = mem[reg[rt]]
-    0 : InstOut = 'b011_001_000; // load from address at reg 0 to reg 1
-                                 // Effect: R1 = #16 (b/c MEM[#0] was #16)
+    0 : InstOut = 'b0_0000_0000; // seti #0
 
-    // opcode = 3 load, rs = 3, rt = 1, reg[rs] = mem[reg[rt]]
-    1 : InstOut = 'b011_011_001; // load from address at reg 1 to reg 3
-                                 // Effect: R3 = #254 (b/c MEM[#16] was #254)
+    1 : InstOut = 'b10_0100_001; // move $1
 
-    // opcode = 0 add, rs = 1, rt = 3, reg[rs] = reg[rs]+reg[rt]
-    2 : InstOut = 'b000_001_011; // add reg 1 and reg 3
-                                 // Effect: R1 = #14 (b/c 270 % 256 = 14)
+    2 : InstOut = 'b10_0100_010; // move $2
 
-    // opcode = 6 store, rs = 1, rt = 0, mem[reg[rt]] = reg[rs]
-    3 : InstOut = 'b110_001_000; // write reg 1 to address at reg 0
-                                 // Effect: MEM[#0] = #14
+    3 : InstOut = 'b0_0000_0101; // seti #5
+    
+    4 : InstOut = 'b10_1011_001; // setlt $1
 
-    // opcode = 15 halt
-    4 : InstOut = '1;  // equiv to 10'b1111111111 or 'b1111111111    halt
+    5 : InstOut = 'b11_0_001010; // br $10
+
+    6 : InstOut = 'b0_0000_0010; // seti #2
+
+    7 : InstOut = 'b10_0000_010; // add $2
+
+    8 : InstOut = 'b10_0100_010; // move $2
+
+    9 : InstOut = 'b0_0000_0001; // seti #1
+
+    10 : InstOut = 'b10_0000_001; // add $1
+
+    11 : InstOut = 'b10_0100_001; // move $1
+
+    12 : InstOut = 'b0_0000_000; // seti #-1
+
+    13 : InstOut = 'b10_1011_000; // setlt $0
+    
+    14 : InstOut = 'b11_1_000000; // bl 00_0000
+
+    15 : InstOut = '1;  // halt
 
     // (default case already covered by opening statement)
   endcase
 end
-*/
+
 
 
 // Approach 2: Create an actual instruction memory, and populate it
@@ -67,7 +80,7 @@ end
 // start testing your actual program implementations on your core,
 // rather than individual instructions.
 
-
+/*
 // Declare 2-dimensional array, W bits wide, 2**A words deep
 logic [W-1:0] inst_rom[2**A];
 
@@ -87,6 +100,6 @@ initial begin
   // try this on your machine most likely:
   //$readmemb("//vmware-host/Shared Folders/Downloads/basic_proc2/machine_code.txt", inst_rom);
 end
-
+*/
 
 endmodule

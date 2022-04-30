@@ -18,7 +18,7 @@ module ProgCtr #(parameter A=10)(
                        BranchRelEn, // jump conditionally to Target + PC
                        ALU_flag,    // flag from ALU, e.g. Zero, Carry, Overflow, Negative (from ARM)
   input        [A-1:0] AbsTarget,      // jump ... "how high?"
-  input        [7:0]   RelTarget,
+  input        [5:0]   RelTarget,
   output logic [A-1:0] ProgCtr      // the program counter register itself
 );
 
@@ -30,10 +30,10 @@ logic start_r;
 always_ff @(posedge Clk) begin
   if(Reset)
     ProgCtr <= 0;                  // for first program; want different value for 2nd or 3rd
-  else if(BranchAbsEn && !ALU_flag)             // unconditional absolute jump
+  else if(BranchAbsEn && ~ALU_flag)             // unconditional absolute jump
     ProgCtr <= AbsTarget;
-  else if(BranchRelEn && !ALU_flag) // conditional relative jump
-    ProgCtr <= $signed(RelTarget) + ProgCtr;   //   how would you make it unconditional and/or absolute
+  else if(BranchRelEn && ~ALU_flag) // conditional relative jump
+    ProgCtr <= {RelTarget[5], RelTarget[5], RelTarget[5], RelTarget[5], RelTarget} + ProgCtr;   //   how would you make it unconditional and/or absolute
   else
     ProgCtr <= ProgCtr+'b1;        // default increment (no need for ARM/MIPS +4 -- why?)
 

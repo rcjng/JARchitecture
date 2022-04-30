@@ -60,7 +60,7 @@ always_comb begin
   // I-Type
   if (Instruction[8] == 1'b0) begin
     RegWrEn     = 1'b1;
-    AInSel      = 2'b11;
+    AInSel      = 2'b10;
   end
 
   else begin

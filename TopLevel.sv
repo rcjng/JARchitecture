@@ -1,5 +1,7 @@
-// Design Name:      CSE141L
-// Module Name:      TopLevel
+// Create Date:   2022.04.30
+// Last Update:   2022.04.30
+// Design Name:   JARchitecture Top Level
+// Module Name:   TopLevel
 
 // you will have the same 3 ports
 module TopLevel(
@@ -138,7 +140,7 @@ ProgCtr PC1 (
   .BranchRelEn (Ctrl1_BranchEn_out), // branch enable
   .ALU_flag    (ALU1_Cond_out),      // Maybe your PC will find this useful
   .AbsTarget   (LUT_Target),
-  .RelTarget   (ALU1_Out_out),
+  .RelTarget   (Active_InstOut[5:0]),
   .ProgCtr     (PC1_ProgCtr_out)     // program count = index to instruction memory
 );
 
@@ -208,6 +210,9 @@ Ctrl Ctrl1 (
   .TargSel      (Ctrl1_TargSel_out),   // index into lookup table
   .ALUOp        (Ctrl1_ALUOp_out)
 );
+logic [2:0] Zero_Input;
+
+assign Zero_Input = 3'b0;
 
 // Register file
 // A(3) makes this 2**3=8 elements deep
@@ -216,7 +221,7 @@ RegFile #(.W(8),.A(3)) RF1 (
   .Reset     (Reset),
   .WriteEn   (Ctrl1_RegWrEn_out),
   .RaddrA    (Active_InstOut[2:0]),      // See example below on how 3 opcode bits
-  .RaddrB    (Zero_Input),      // could address 16 registers...
+  .RaddrB    (Zero_Input),      // could address 8 registers...
   .Waddr     (WriteReg),      // mux above
   .DataIn    (ExMem_RegValue_out),
   .DataOutA  (RF1_DataOutA_out),
@@ -249,7 +254,7 @@ logic [ 7:0] InA, InB, Imm;      // ALU operand inputs
 assign InA = RF1_DataOutA_out;     // connect RF out to ALU in
 assign InB = RF1_DataOutB_out;     // interject switch/mux if needed/desired
 assign Imm = Active_InstOut[7:0];
-assign Zero_Input = 3'b0;
+
 
 
 logic [7:0] ALU1_A_in;
@@ -258,25 +263,25 @@ assign WriteReg = Ctrl1_RegDst_out ? Active_InstOut[2:0] : Zero_Input;
 
 always_comb begin
   case (Ctrl1_AInSel_out)
-    0 : ALU1_A_in = 8'b0;
-    1 : ALU1_A_in = InA;
-    2 : ALU1_A_in = Imm[7:0];
+    2'b00 : ALU1_A_in = 8'b0;
+    2'b01 : ALU1_A_in = InA;
+    2'b10 : ALU1_A_in = Imm[7:0];
     default : ALU1_A_in = 8'b0;
   endcase
 
   case (Ctrl1_BInSel_out)
-    0 : ALU1_B_in = 8'b0;
-    1 : ALU1_B_in = InB;
-    2 : ALU1_B_in = Imm[7:0];
+    2'b00 : ALU1_B_in = 8'b0;
+    2'b01 : ALU1_B_in = InB;
+    2'b10 : ALU1_B_in = Imm[7:0];
     default : ALU1_B_in = 8'b0;
   endcase
 end 
 
 ALU ALU1 (
   .Clk     (Clk),
-  .InputA  (ALU_A_in),
-  .InputB  (ALU_B_in),
-  .OP      (ALUOp),
+  .InputA  (ALU1_A_in),
+  .InputB  (ALU1_B_in),
+  .OP      (Ctrl1_ALUOp_out),
   .Out     (ALU1_Out_out),
   .Cond    (ALU1_Cond_out)
 );
