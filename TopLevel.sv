@@ -45,6 +45,7 @@ wire [ 9:0] LUT1_Target_out;  // Target of branch/jump
 wire [ 9:0] LUT2_Target_out;
 wire [ 9:0] LUT3_Target_out;
 wire [ 9:0] LUT4_Target_out;
+logic [9:0] LUT_Target;
 
 // Control block outputs
 logic       Ctrl1_Jump_out;      // to program counter: jump
@@ -136,12 +137,8 @@ ProgCtr PC1 (
   .BranchAbsEn (Ctrl1_Jump_out),     // jump enable
   .BranchRelEn (Ctrl1_BranchEn_out), // branch enable
   .ALU_flag    (ALU1_Cond_out),      // Maybe your PC will find this useful
-  .AbsTarget1  (LUT1_Target_out),
-  .AbsTarget2  (LUT2_Target_out),
-  .AbsTarget3  (LUT3_Target_out),
-  .AbsTarget4  (LUT4_Target_out),
+  .AbsTarget   (LUT_Target),
   .RelTarget   (ALU1_Out_out),
-  .AbsTargetSel(Ctrl1_LUTSel_out),
   .ProgCtr     (PC1_ProgCtr_out)     // program count = index to instruction memory
 );
 
@@ -163,6 +160,15 @@ LUT1 LUT4(
   .Target       (LUT1_Target_out)
 );
 
+always_comb begin
+  case (Ctrl1_LUTSel_out)
+    0 : LUT_Target = LUT1_Target_out;
+    1 : LUT_Target = LUT2_Target_out;
+    2 : LUT_Target = LUT2_Target_out;
+    3 : LUT_Target = LUT3_Target_out;
+    default : LUT_Target = LUT1_Target_out;
+  endcase
+end
 
 // Note that it may be simpler to handle Start here; depends on your design!
 logic should_run_processor;
@@ -237,52 +243,42 @@ assign Ack = should_run_processor & Ctrl1_Ack_out;
 
 // You can declare local wires if it makes sense, for instance
 // if you need an local mux for the input
-logic [ 7:0] InA, InB;      // ALU operand inputs
+logic [ 7:0] InA, InB, Imm;      // ALU operand inputs
 
 // No decision logic for these in this implementation
 assign InA = RF1_DataOutA_out;     // connect RF out to ALU in
 assign InB = RF1_DataOutB_out;     // interject switch/mux if needed/desired
-assign Zero_Input = 3'b000;
+assign Imm = Active_InstOut[7:0];
+assign Zero_Input = 3'b0;
 
 
-logic [7:0] Amux_out;
-logic [7:0] Bmux_out;
+logic [7:0] ALU1_A_in;
+logic [7:0] ALU1_B_in;
+assign WriteReg = Ctrl1_RegDst_out ? Active_InstOut[2:0] : Zero_Input;
 
-Mux2 RegDstMux(
-  .Sel(Ctrl1_RegDst_out),
-  .A(Active_InstOut[2:0]),
-  .B(Zero_Input),
-  .out(WriteReg)
-);
+always_comb begin
+  case (Ctrl1_AInSel_out)
+    0 : ALU1_A_in = 8'b0;
+    1 : ALU1_A_in = InA;
+    2 : ALU1_A_in = Imm[7:0];
+    default : ALU1_A_in = 8'b0;
+  endcase
 
-Mux4 Amux(
-  .Sel(Ctrl1_AInSel_out),
-  .A(0),
-  .B(InA),
-  .C(Active_InstOut[7:0]),
-  .D(),
-  .out(Amux_out)
-);
-
-Mux4 Bmux(
-  .Sel(Ctrl1_BInSel_out),
-  .A(0),
-  .B(InB),
-  .C(Active_InstOut[7:0]),
-  .D(),
-  .out(Bmux_out)
-);
+  case (Ctrl1_BInSel_out)
+    0 : ALU1_B_in = 8'b0;
+    1 : ALU1_B_in = InB;
+    2 : ALU1_B_in = Imm[7:0];
+    default : ALU1_B_in = 8'b0;
+  endcase
+end 
 
 ALU ALU1 (
-  .InputA  (Amux_out),
-  .InputB  (Bmux_out),
-  // .SC_in   (1'b1),
+  .Clk     (Clk),
+  .InputA  (ALU_A_in),
+  .InputB  (ALU_B_in),
   .OP      (ALUOp),
   .Out     (ALU1_Out_out),
   .Cond    (ALU1_Cond_out)
-  // .Zero    (ALU1_Zero_out),
-  // .Parity  (ALU1_Parity_out),
-  // .Odd     (ALU1_Odd_out)
 );
 
 

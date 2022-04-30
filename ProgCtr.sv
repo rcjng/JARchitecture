@@ -17,12 +17,8 @@ module ProgCtr #(parameter A=10)(
                        BranchAbsEn, // jump unconditionally to Target value
                        BranchRelEn, // jump conditionally to Target + PC
                        ALU_flag,    // flag from ALU, e.g. Zero, Carry, Overflow, Negative (from ARM)
-  input        [A-1:0] AbsTarget1,      // jump ... "how high?"
-                       AbsTarget2,
-                       AbsTarget3,
-                       AbsTarget4,
+  input        [A-1:0] AbsTarget,      // jump ... "how high?"
   input        [7:0]   RelTarget,
-  input        [1:0]   AbsTargetSel,
   output logic [A-1:0] ProgCtr      // the program counter register itself
 );
 
@@ -35,12 +31,7 @@ always_ff @(posedge Clk) begin
   if(Reset)
     ProgCtr <= 0;                  // for first program; want different value for 2nd or 3rd
   else if(BranchAbsEn && !ALU_flag)             // unconditional absolute jump
-    case(AbsTargetSel)
-      0 : ProgCtr <= AbsTarget1;
-      1 : ProgCtr <= AbsTarget2;
-      2 : ProgCtr <= AbsTarget3;
-      default : ProgCtr <= AbsTarget4;
-    endcase
+    ProgCtr <= AbsTarget;
   else if(BranchRelEn && !ALU_flag) // conditional relative jump
     ProgCtr <= $signed(RelTarget) + ProgCtr;   //   how would you make it unconditional and/or absolute
   else

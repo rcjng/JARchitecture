@@ -8,6 +8,7 @@
 import Definitions::*;
 
 module ALU #(parameter W=8, Ops=4)(
+  input                  Clk,
   input        [W-1:0]   InputA,       // data inputs
                          InputB,
   input        [Ops-1:0] OP,           // ALU opcode, part of microcode
@@ -21,13 +22,19 @@ module ALU #(parameter W=8, Ops=4)(
                          // you may provide additional status flags, if desired
 );
 
+logic nextCond;
+always_ff @(posedge Clk) begin
+  Cond <= nextCond;
+end
+
+
 // type enum: used for convenient waveform viewing
 op_mne op_mnemonic;
 
 always_comb begin
   // No Op = default
   Out = 0;
-  Cond = 0;
+  nextCond = Cond;
   // add, sub, load, store, move, and, or, not, xor, shiftl, shiftr, setlt, seteq
   case(OP)
     ADD : Out = InputA + InputB;        // add 
@@ -41,21 +48,21 @@ always_comb begin
     SLT : begin
       if (InputA < InputB) begin
         Out = 8'b1;
-        Cond = 1'b1;
+        nextCond = 1'b1;
       end
       else begin
         Out = 8'b0;
-        Cond = 1'b0;
+        nextCond = 1'b0;
       end
     end
     SEQ : begin
       if (InputA == InputB) begin
         Out = 8'b1;
-        Cond = 1'b1;
+        nextCond = 1'b1;
       end
       else begin
         Out = 8'b0;
-        Cond = 1'b0;
+        nextCond = 1'b0;
       end
     end
 

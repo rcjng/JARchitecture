@@ -45,226 +45,127 @@ assign Ack = &Instruction;
 // jump on right shift that generates a zero
 // equiv to simply: assign Jump = Instruction[2:0] == RSH;
 always_comb begin
+  Jump        = 1'b0;
+  BranchEn    = 1'b0;
+  MemWrEn     = 1'b0;
+  RegWrEn     = 1'b0;
+  LoadInst    = 1'b0;
+  RegDst      = 1'b0;
+  AInSel      = 2'b0;
+  BInSel      = 2'b0;
+  LUTSel      = 2'b0;
+  TargSel     = 4'b0;
+  ALUOp       = ADD;
+
   // I-Type
   if (Instruction[8] == 1'b0) begin
-    Jump        = 1'b0;
-    BranchEn    = 1'b0;
-    MemWrEn     = 1'b0;
     RegWrEn     = 1'b1;
-    LoadInst    = 1'b0;
-    RegDst      = 1'b0;
     AInSel      = 2'b11;
-    BInSel      = 2'b00;
-    LUTSel      = 2'b00;
-    TargSel     = 4'b0000;
-    ALUOp       = ADD;
   end
+
   else begin
+
     // R-Type
     if (Instruction[8:7] == 2'b10) begin
-      
       if (Instruction[6:3] == 4'b0000) begin
         //add
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1;
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0;
-        LUTSel = 2'b0;
         AInSel = 2'b1;
         BInSel = 2'b1;
-        TargSel = 4'b0;
-        ALUOp = ADD;
       end
       else if (Instruction[6:3] == 4'b0001) begin
         //sub
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1;
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0;
-        LUTSel = 2'b0;
         AInSel = 2'b1;
         BInSel = 2'b1;
-        TargSel = 4'b0;
         ALUOp = SUB;
       end
       else if (Instruction[6:3] == 4'b0010) begin
         // load
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1;   // write from mem to reg
-        MemWrEn = 1'b0;
         LoadInst = 1'b1;  // load from mem to reg
-        RegDst = 1'b0;
-        LUTSel = 2'b0;
         AInSel = 2'b1;    // get address from register
-        BInSel = 2'b0;    // add 0 to above
-        TargSel = 4'b0;
-        ALUOp = ADD;
       end
       else if (Instruction[6:3] == 4'b0011) begin
-        //store
-        Jump = 1'b0;
-        BranchEn = 1'b0;
-        RegWrEn = 1'b0;   // don't write to reg
+        // store
         MemWrEn = 1'b1;   // write to mem
-        LoadInst = 1'b0;
-        RegDst = 1'b0;
-        LUTSel = 2'b0;
-        AInSel = 2'b0; // 
         BInSel = 2'b1; //
-        TargSel = 4'b0;
-        ALUOp = ADD;
       end
       else if (Instruction[6:3] == 4'b0100) begin
         //move
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1;   // write to reg
-        MemWrEn = 1'b0; 
-        LoadInst = 1'b0;
         RegDst = 1'b1;
-        LUTSel = 2'b0;
-        AInSel = 2'b1; // 
-        BInSel = 2'b0; //
-        TargSel = 4'b0;
-        ALUOp = ADD;
+        BInSel = 2'b1; // 
       end
       else if (Instruction[6:3] == 4'b0101) begin
         //and
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1;   // write result to R0
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0;    // write result to R0
-        LUTSel = 2'b0;
         AInSel = 2'b1;    // param Rx
         BInSel = 2'b1;    // param R0
-        TargSel = 4'b0;
         ALUOp = AND;
       end
       else if (Instruction[6:3] == 4'b0110) begin
         //or
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1;   // write result to R0
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0;    // write result to R0
-        LUTSel = 2'b0;
         AInSel = 2'b1;    // param Rx
         BInSel = 2'b1;    // param R0
-        TargSel = 4'b0;
         ALUOp = OR;
       end
       else if (Instruction[6:3] == 4'b0111) begin
         //xor
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1;   // write result to R0
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0;    // write result to R0
-        LUTSel = 2'b0;
         AInSel = 2'b1;    // param Rx
         BInSel = 2'b1;    // param R0
-        TargSel = 4'b0;
         ALUOp = XOR;
       end
       else if (Instruction[6:3] == 4'b1000) begin
-        //bitwise not
-        Jump = 1'b0;
-        BranchEn = 1'b0;
+        //not
         RegWrEn = 1'b1;   // write result to R0
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0;    // write result to R0
-        LUTSel = 2'b0;
         AInSel = 2'b1;    // param Rx
         BInSel = 2'b1;    // param R0
-        TargSel = 4'b0;
         ALUOp = NOT;
       end
       else if (Instruction[6:3] == 4'b1001) begin
         //shift left
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1; // write result to R0
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0; // write result to R0
-        LUTSel = 2'b0;
         AInSel = 2'b1;  // value of rx
         BInSel = 2'b1;  // value of r0
-        TargSel = 4'b0;
         ALUOp = LSH;
       end
       else if (Instruction[6:3] == 4'b1010) begin
         //shift right
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1; // write result to R0
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0; // write result to R0
-        LUTSel = 2'b0;
-        TargSel = 4'b0;
         AInSel = 2'b1;  // value of rx
         BInSel = 2'b1;  // value of r0
         ALUOp = RSH;
       end
       else if (Instruction[6:3] == 4'b1011) begin
         //setlt
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1; // write result to r0
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0; // write result to r0
-        LUTSel = 2'b0;
         AInSel = 2'b1; // param Rx
         BInSel = 2'b1; // param R0
-        TargSel = 4'b0;
         ALUOp = SLT;
       end
       else if (Instruction[6:3] == 4'b1100) begin
         //seteq
-        Jump = 1'b0;
-        BranchEn = 1'b0;
         RegWrEn = 1'b1; // write result to r0
-        MemWrEn = 1'b0;
-        LoadInst = 1'b0;
-        RegDst = 1'b0; // write result to r0
-        LUTSel = 2'b0;
-        TargSel = 4'b0;
         AInSel = 2'b1; // param Rx
         BInSel = 2'b1; // param R0
         ALUOp = SEQ;
       end
     end
     else begin
-      ALUOp = ADD;
+      // B-Type
       BranchEn = 1'b1;
-      RegWrEn = 1'b0;
-      MemWrEn = 1'b0;
-      LoadInst = 1'b0;
-      RegDst = 1'b0;
-      AInSel = 2'b1;
-      BInSel = 2'b1;
       
-      //branch type
       if (Instruction[6] == 1'b1) begin
-        //bl
+        // bl
         Jump = 1'b1;
         LUTSel = Instruction[5:4];
         TargSel = Instruction[3:0];
-        
       end
       else begin
+        // br
         Jump = 1'b0;
         LUTSel = 2'b0;
         TargSel = 4'b0;
