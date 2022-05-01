@@ -43,11 +43,11 @@ wire [ 9:0] PC1_ProgCtr_out;  // the program counter
 // n.b. "LUT" is a pretty generic name, a nice example
 // of how to do a LUT, but your core should call this
 // something more informative probably...
-wire [ 9:0] LUT1_Target_out;  // Target of branch/jump
+wire [ 9:0] LUT0_Target_out;  // Target of branch/jump
+wire [ 9:0] LUT1_Target_out;
 wire [ 9:0] LUT2_Target_out;
 wire [ 9:0] LUT3_Target_out;
-wire [ 9:0] LUT4_Target_out;
-logic [9:0] LUT_Target;
+logic [9:0] LUT_Target_out;
 
 // Control block outputs
 logic       Ctrl1_Jump_out;      // to program counter: jump
@@ -69,18 +69,29 @@ logic [7:0] RF1_DataOutB_out; // Contents of second selected register
 
 // ALU outputs
 logic [7:0] ALU1_Out_out;
-// logic       ALU1_Zero_out;
-// logic       ALU1_Parity_out;
-// logic       ALU1_Odd_out;
 logic       ALU1_Cond_out;
 
 // Data Memory outputs
 logic [7:0] DM1_DataOut_out;  // data out from data_memory
 
 // Output Mux deciding whether ALU or Memory result is used
-logic [ 7:0] ExMem_RegValue_out; // data in to reg file
+logic [7:0] ExMem_RegValue_out; // data in to reg file
 
-logic [ 2:0] WriteReg;
+logic [2:0] ZeroReg;
+logic [2:0] SpecifiedReg;
+logic [2:0] WriteReg;
+logic [7:0] Imm; 
+logic [5:0] BranchImm;
+logic [2:0] LUTNum;
+logic [3:0] LUTEntry;
+
+assign ZeroReg = 3'b0;
+assign SpecifiedReg = Active_InstOut[2:0];
+assign WriteReg = Ctrl1_RegDst_out ? SpecifiedReg : ZeroReg;
+assign Imm = Active_InstOut[7:0];
+assign BranchImm = Active_InstOut[5:0];
+assign LUTNum = Active_InstOut[5:4];
+assign LUTEntry = Active_InstOut[3:0];
 
 // Extras
 //
@@ -88,7 +99,6 @@ logic [ 2:0] WriteReg;
 // useful for diagnostics or performance
 
 logic[15:0] CycleCount; // Count the total number of clock cycles.
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Fetch = Program Counter + Instruction ROM
@@ -139,36 +149,35 @@ ProgCtr PC1 (
   .BranchAbsEn (Ctrl1_Jump_out),     // jump enable
   .BranchRelEn (Ctrl1_BranchEn_out), // branch enable
   .ALU_flag    (ALU1_Cond_out),      // Maybe your PC will find this useful
-  .AbsTarget   (LUT_Target),
-  .RelTarget   (Active_InstOut[5:0]),
+  .AbsTarget   (LUT_Target_out),
+  .RelTarget   (BranchImm),
   .ProgCtr     (PC1_ProgCtr_out)     // program count = index to instruction memory
 );
 
 // this is one way to 'expand' the range of jumps available
+LUT0 LUT0(
+  .Addr         (LUTEntry),
+  .Target       (LUT0_Target_out)
+);
 LUT1 LUT1(
-  .Addr         (Ctrl1_TargSel_out),
+  .Addr         (LUTEntry),
   .Target       (LUT1_Target_out)
 );
-LUT1 LUT2(
-  .Addr         (Ctrl1_TargSel_out),
-  .Target       (LUT1_Target_out)
+LUT2 LUT2(
+  .Addr         (LUTEntry),
+  .Target       (LUT2_Target_out)
 );
-LUT1 LUT3(
-  .Addr         (Ctrl1_TargSel_out),
-  .Target       (LUT1_Target_out)
-);
-LUT1 LUT4(
-  .Addr         (Ctrl1_TargSel_out),
-  .Target       (LUT1_Target_out)
+LUT3 LUT3(
+  .Addr         (LUTEntry),
+  .Target       (LUT3_Target_out)
 );
 
 always_comb begin
-  case (Ctrl1_LUTSel_out)
-    0 : LUT_Target = LUT1_Target_out;
-    1 : LUT_Target = LUT2_Target_out;
-    2 : LUT_Target = LUT2_Target_out;
-    3 : LUT_Target = LUT3_Target_out;
-    default : LUT_Target = LUT1_Target_out;
+  case (LUTNum)
+    0 : LUT_Target_out = LUT0_Target_out;
+    1 : LUT_Target_out = LUT1_Target_out;
+    2 : LUT_Target_out = LUT2_Target_out;
+    3 : LUT_Target_out = LUT3_Target_out;
   endcase
 end
 
@@ -185,7 +194,7 @@ end
 
 always_comb begin
   should_run_processor = ever_start & ~Start;
-  Active_InstOut = (should_run_processor) ? IR1_InstOut_out : 9'b111_111_111;
+  Active_InstOut = (should_run_processor) ? IR1_InstOut_out : 9'b10_1111_111;
 end
 /////////////////////////////////////////////////////////////////////// Fetch //
 
@@ -204,15 +213,10 @@ Ctrl Ctrl1 (
   .LoadInst     (Ctrl1_LoadInst_out), // selects memory vs ALU output as data input to reg_file
   .RegDst       (Ctrl1_RegDst_out),
   .Ack          (Ctrl1_Ack_out),      // "done" flag
-  .LUTSel       (Ctrl1_LUTSel_out),
   .AInSel       (Ctrl1_AInSel_out),
   .BInSel       (Ctrl1_BInSel_out),
-  .TargSel      (Ctrl1_TargSel_out),   // index into lookup table
   .ALUOp        (Ctrl1_ALUOp_out)
 );
-logic [2:0] Zero_Input;
-
-assign Zero_Input = 3'b0;
 
 // Register file
 // A(3) makes this 2**3=8 elements deep
@@ -220,8 +224,8 @@ RegFile #(.W(8),.A(3)) RF1 (
   .Clk       (Clk),
   .Reset     (Reset),
   .WriteEn   (Ctrl1_RegWrEn_out),
-  .RaddrA    (Active_InstOut[2:0]),      // See example below on how 3 opcode bits
-  .RaddrB    (Zero_Input),      // could address 8 registers...
+  .RaddrA    (SpecifiedReg),      // See example below on how 3 opcode bits
+  .RaddrB    (ZeroReg),      // could address 8 registers...
   .Waddr     (WriteReg),      // mux above
   .DataIn    (ExMem_RegValue_out),
   .DataOutA  (RF1_DataOutA_out),
@@ -248,32 +252,22 @@ assign Ack = should_run_processor & Ctrl1_Ack_out;
 
 // You can declare local wires if it makes sense, for instance
 // if you need an local mux for the input
-logic [ 7:0] InA, InB, Imm;      // ALU operand inputs
-
-// No decision logic for these in this implementation
-assign InA = RF1_DataOutA_out;     // connect RF out to ALU in
-assign InB = RF1_DataOutB_out;     // interject switch/mux if needed/desired
-assign Imm = Active_InstOut[7:0];
-
-
-
 logic [7:0] ALU1_A_in;
 logic [7:0] ALU1_B_in;
-assign WriteReg = Ctrl1_RegDst_out ? Active_InstOut[2:0] : Zero_Input;
 
 always_comb begin
   case (Ctrl1_AInSel_out)
-    2'b00 : ALU1_A_in = 8'b0;
-    2'b01 : ALU1_A_in = InA;
-    2'b10 : ALU1_A_in = Imm[7:0];
-    default : ALU1_A_in = 8'b0;
+    0 : ALU1_A_in = 8'b0;
+    1 : ALU1_A_in = RF1_DataOutA_out;
+    2 : ALU1_A_in = Imm;
+    3 : ALU1_A_in = 8'b1;
   endcase
 
   case (Ctrl1_BInSel_out)
-    2'b00 : ALU1_B_in = 8'b0;
-    2'b01 : ALU1_B_in = InB;
-    2'b10 : ALU1_B_in = Imm[7:0];
-    default : ALU1_B_in = 8'b0;
+    0 : ALU1_B_in = 8'b0;
+    1 : ALU1_B_in = RF1_DataOutB_out;
+    2 : ALU1_B_in = Imm;
+    3 : ALU1_B_in = 8'b1;
   endcase
 end 
 
@@ -285,7 +279,6 @@ ALU ALU1 (
   .Out     (ALU1_Out_out),
   .Cond    (ALU1_Cond_out)
 );
-
 
 DataMem DM1(
   .DataAddress  (RF1_DataOutA_out),

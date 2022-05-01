@@ -1,7 +1,5 @@
-// Create Date:   2017.01.25
-// Last Update:   2022.04.30
-// Design Name:   JARchitecture LUT1
-// Module Name:   LUT1
+// Design Name:    CSE141L
+// Module Name:    LUT2
 
 // possible lookup table for PC target
 // leverage a few-bit pointer to a wider number
@@ -18,10 +16,8 @@ module LUT1(
 
 always_comb begin
 
-  case (Addr)
-    // For testbench purposes
-    4'b0000: Target = 10'h003; 
-    
+  case(Addr)
+    4'b0000: Target = 10'h001; 
     4'b0001: Target = 10'h001;
     4'b0010: Target = 10'h001;
     4'b0011: Target = 10'h001;

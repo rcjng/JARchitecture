@@ -128,27 +128,12 @@ initial begin
   ALU_flag = '0;
   BranchAbsEn = '0;
   BranchRelEn = '1;
-  RelTarget = 8'b11111011;
+  RelTarget = 6'b111011;  // -5
 
   #1 Clk = '1;
   #1 Clk = '0;
   $display("Checking that relative branch went back");
   assert (NextInstructionIndex == 'd12);
-  
-
-  //BranchAbsEn, // jump unconditionally to Target value
-  //                     BranchRelEn, // jump conditionally to Target + PC
-  //                     ALU_flag,    // flag from ALU, e.g. Zero, Carry, Overflow, Negative (from ARM)
-  //input        [A-1:0] Target,      // jump ... "how high?"
-
-  // Start = '1
-  // BranchAbsEn = '1;
-  // BranchAbsEn = '0;
-  // Clk = '1;
-  // Clk = '0;
-
-  // Target = '3
-  // assert(NextInstructionIndex == 'd20)
 
   $display("All checks passed.");
 end

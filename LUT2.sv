@@ -1,5 +1,5 @@
 // Design Name:    CSE141L
-// Module Name:    LUT2
+// Module Name:    LUT3
 
 // possible lookup table for PC target
 // leverage a few-bit pointer to a wider number

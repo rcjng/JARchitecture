@@ -21,10 +21,8 @@ bit Clk;
 logic [ 7:0] INPUTA;  // data inputs
 logic [ 7:0] INPUTB;
 logic [ 3:0] op;      // ALU opcode, part of microcode **4 bits,
-// bit SC_IN = 'b0;
 wire[ 7:0] OUT;
 logic COND;
-// wire Zero;
 
 // Define a helper wire for comparison
 logic [ 7:0] expected;
@@ -34,11 +32,9 @@ ALU uut(
   .Clk(Clk),
   .InputA(INPUTA),
   .InputB(INPUTB),
-  // .SC_in(SC_IN),
   .OP(op),
   .Out(OUT),
   .Cond(COND)
-  // .Zero(Zero)
 );
 
 

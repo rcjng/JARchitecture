@@ -11,8 +11,8 @@ import Definitions::*;
 // n.b. This is an example / starter block
 //      Your processor **will be different**!
 module Ctrl (
-  input  [8:0] Instruction,    // machine code
-                               // some designs use ALU inputs here
+  input  [8:0] Instruction,     // machine code
+                                // some designs use ALU inputs here
   output logic       Jump,      // Relative (0) or LUT (1) jump?
                      BranchEn,  // branch at all?
                      RegWrEn,   // write to reg_file (common)
@@ -20,10 +20,8 @@ module Ctrl (
                      LoadInst,  // mem (1) or ALU (0) to reg_file
                      RegDst,    // r0 (0) or specified register (1)
                      Ack,       // "done with program"
-  output logic [1:0] LUTSel,    // Which LUT?
-                     AInSel,    // 0 (0), Reg data [Rx] (1), Immediate (2)
-                     BInSel,     // 0 (0), Reg data [R0] (1), Immediate (2)
-  output logic [3:0] TargSel,    // LUT Address
+  output logic [1:0] AInSel,    // 0 (0), Reg data [Rx] (1), Immediate (2)
+                     BInSel,    // 0 (0), Reg data [R0] (1), Immediate (2)
   output logic [3:0] ALUOp      // Determines the ALU operation
   
 );
@@ -39,8 +37,8 @@ module Ctrl (
 // assign RegWrEn = Instruction[8:7] != 2'b11;
 // assign LoadInst = Instruction[8:6] == 3'b011;
 
-// reserve instruction = 9'b111111111; for Ack
-assign Ack = &Instruction;
+// reserve instruction = 9'b10_1111_111; for Ack
+assign Ack = (Instruction == 9'b10_1111_111);
 
 // jump on right shift that generates a zero
 // equiv to simply: assign Jump = Instruction[2:0] == RSH;
@@ -53,8 +51,6 @@ always_comb begin
   RegDst      = 1'b0;
   AInSel      = 2'b0;
   BInSel      = 2'b0;
-  LUTSel      = 2'b0;
-  TargSel     = 4'b0;
   ALUOp       = ADD;
 
   // I-Type
@@ -84,12 +80,10 @@ always_comb begin
         // load
         RegWrEn = 1'b1;   // write from mem to reg
         LoadInst = 1'b1;  // load from mem to reg
-        AInSel = 2'b1;    // get address from register
       end
       else if (Instruction[6:3] == 4'b0011) begin
         // store
         MemWrEn = 1'b1;   // write to mem
-        BInSel = 2'b1; //
       end
       else if (Instruction[6:3] == 4'b0100) begin
         //move
@@ -161,14 +155,10 @@ always_comb begin
       if (Instruction[6] == 1'b1) begin
         // bl
         Jump = 1'b1;
-        LUTSel = Instruction[5:4];
-        TargSel = Instruction[3:0];
       end
       else begin
         // br
         Jump = 1'b0;
-        LUTSel = 2'b0;
-        TargSel = 4'b0;
       end
     end
   end

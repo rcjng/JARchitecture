@@ -87,7 +87,7 @@ always_comb begin
 
     25 : InstOut = 'b10_0100_010; // move $2
 
-    26 : InstOut = '1;  // halt
+    26 : InstOut = 'b10_1111_111;  // halt
 
     // (default case already covered by opening statement)
   endcase

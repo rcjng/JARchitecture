@@ -48,8 +48,8 @@ initial begin
   wait (Ack);
   #10 $display("------------------------------------------");
   #10 $display("r2 = %d", DUT.RF1.Registers[2]);
-      $display("last instruction = %d || sim time %t",DUT.PC1.ProgCtr,$time);
       $display("mem[7] = %d", DUT.DM1.Core[7]);
+      $display("last instruction = %d || sim time %t",DUT.PC1.ProgCtr,$time);
 
   // Note: $stop acts like a breakpoint, pausing the simulation
   // and allowing certain tools to interact with it more, in
