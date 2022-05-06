@@ -63,7 +63,7 @@ always_comb begin
 
     13 : InstOut = 'b10_1011_000; // setlt $0
     
-    14 : InstOut = 'b11_1_000000; // bl LUT1 Entry0
+    14 : InstOut = 'b11_1_000000; // bl LUT0 Entry0
 
     15 : InstOut = 'b0_0000_111; // seti #7
 

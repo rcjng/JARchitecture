@@ -33,7 +33,7 @@ always_ff @(posedge Clk) begin
   else if(BranchAbsEn && ~ALU_flag)             // unconditional absolute jump
     ProgCtr <= AbsTarget;
   else if(BranchRelEn && ~ALU_flag) // conditional relative jump
-    ProgCtr <= {RelTarget[5], RelTarget[5], RelTarget[5], RelTarget[5], RelTarget} + ProgCtr;   //   how would you make it unconditional and/or absolute
+    ProgCtr <= {0, 0, 0, 0, RelTarget} + ProgCtr;   //   how would you make it unconditional and/or absolute
   else
     ProgCtr <= ProgCtr+'b1;        // default increment (no need for ARM/MIPS +4 -- why?)
 
