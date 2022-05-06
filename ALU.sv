@@ -29,23 +29,24 @@ end
 
 
 // type enum: used for convenient waveform viewing
-op_mne op_mnemonic;
+op_mne op;
+assign op = op_mne'(OP);            // displays operation name in waveform viewer
 
 always_comb begin
   // No Op = default
   Out = 0;
   nextCond = Cond;
   // add, sub, load, store, move, and, or, not, xor, shiftl, shiftr, setlt, seteq
-  case(OP)
+  case(op)
     ADD : Out = InputA + InputB;        // add 
-    SUB : Out = InputA + (~InputB) + 1;
-    AND : Out = InputA & InputB;        // bitwise AND
-    OR  : Out = InputA | InputB;
-    NOT : Out = ~InputA;
-    XOR : Out = InputA ^ InputB;        // bitwise exclusive OR
-    LSH : Out = InputA << InputB;    // shift left, fill in with SC_in
-    RSH : Out = InputA >> InputB;    // shift right 
-    SLT : begin
+    SUB : Out = InputA + (~InputB) + 1; // sub
+    AND : Out = InputA & InputB;        // bitwise and
+    OR  : Out = InputA | InputB;        // bitwise or
+    NOT : Out = ~InputA;                // bitwise not
+    XOR : Out = InputA ^ InputB;        // bitwise xor
+    LSH : Out = InputA << InputB;       // logical shift left
+    RSH : Out = InputA >> InputB;       // logical shift right 
+    SLT : begin                         // set less than
       if (InputA < InputB) begin
         Out = 8'b1;
         nextCond = 1'b1;
@@ -55,7 +56,7 @@ always_comb begin
         nextCond = 1'b0;
       end
     end
-    SEQ : begin
+    SEQ : begin                         // set equal
       if (InputA == InputB) begin
         Out = 8'b1;
         nextCond = 1'b1;
@@ -65,7 +66,6 @@ always_comb begin
         nextCond = 1'b0;
       end
     end
-
     default : Out = 8'bxxxx_xxxx;       // Quickly flag illegal ALU
   endcase
 end
@@ -75,9 +75,9 @@ end
 // assign Odd    = Out[0];                 // odd/even -- just the value of the LSB
 
 // Toolchain guard: icarus verilog doesn't support this debug feature.
-`ifndef __ICARUS__
-always_comb
-  op_mnemonic = op_mne'(OP);            // displays operation name in waveform viewer
-`endif
+// `ifndef __ICARUS__
+// always_comb
+  // op = op_mne'(OP);            // displays operation name in waveform viewer
+// `endif
 
 endmodule

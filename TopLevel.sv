@@ -104,42 +104,42 @@ logic[15:0] CycleCount; // Count the total number of clock cycles.
 // Fetch = Program Counter + Instruction ROM
 
 
-// Some examples of what DPI and Verilator might enable
-//
-// Here, we replace the fixed Inst ROM with runtime programmable memory
-`ifdef VERILATOR
-import "DPI-C" function int add (input int a, input int b);
+// // Some examples of what DPI and Verilator might enable
+// //
+// // Here, we replace the fixed Inst ROM with runtime programmable memory
+// `ifdef VERILATOR
+// import "DPI-C" function int add (input int a, input int b);
 
-initial begin
-   $display("Basic DPI: %x + %x = %x", 1, 2, add(1,2));
-end
+// initial begin
+//    $display("Basic DPI: %x + %x = %x", 1, 2, add(1,2));
+// end
 
-import "DPI-C" function int getInstAtAddr (input int DPI_Addr);
-export "DPI-C" task writeInstOut;
+// import "DPI-C" function int getInstAtAddr (input int DPI_Addr);
+// export "DPI-C" task writeInstOut;
 
-// Easier to convert here than in CPP
-int DPI_Addr = {22'b0, PC1_ProgCtr_out};
+// // Easier to convert here than in CPP
+// int DPI_Addr = {22'b0, PC1_ProgCtr_out};
 
-int DPI_Inst;
-task writeInstOut;
-  DPI_Inst = getInstAtAddr(DPI_Addr);
-endtask
+// int DPI_Inst;
+// task writeInstOut;
+//   DPI_Inst = getInstAtAddr(DPI_Addr);
+// endtask
 
-assign IR1_InstOut_out = DPI_Inst[8:0];
+// assign IR1_InstOut_out = DPI_Inst[8:0];
 
-//export "DPI-C" function getCurrentPC;
+// //export "DPI-C" function getCurrentPC;
 
-//function void getCurrentPC(output int Address)
-//  Address = PC1_ProgCtr_out;
-//endfunction
+// //function void getCurrentPC(output int Address)
+// //  Address = PC1_ProgCtr_out;
+// //endfunction
 
-`else
+// `else
 // instruction ROM -- holds the machine code pointed to by program counter
 InstROM #(.W(9)) IR1(
   .InstAddress (PC1_ProgCtr_out),
   .InstOut     (IR1_InstOut_out)
 );
-`endif
+// `endif
 
 // this is the program counter module
 ProgCtr PC1 (

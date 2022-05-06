@@ -64,6 +64,8 @@ always_ff @ (posedge Clk) begin
   if (Reset) begin
     for (i=0; i<2**A; i=i+1) begin
       Registers[i] <= '0;
+      // Registers[0] <= 'd30;                    // loads 30 (=0x1E) into Registers address 0
+	    // Registers[2] <= 'b101;                   // loads 00000101 into Registers address 2 
     end
   end else if (WriteEn) begin
     Registers[Waddr] <= DataIn;
