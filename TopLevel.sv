@@ -178,6 +178,7 @@ always_comb begin
     1 : LUT_Target_out = LUT1_Target_out;
     2 : LUT_Target_out = LUT2_Target_out;
     3 : LUT_Target_out = LUT3_Target_out;
+    default: LUT_Target_out = LUT0_Target_out;
   endcase
 end
 
