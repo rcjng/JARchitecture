@@ -39,7 +39,7 @@ always_comb begin
   // add, sub, load, store, move, and, or, not, xor, shiftl, shiftr, setlt, seteq
   case(op)
     ADD : Out = InputA + InputB;        // add 
-    SUB : Out = InputA + (~InputB) + 1; // sub
+    SUB : Out = InputA + (~InputB) + 'b1; // sub
     AND : Out = InputA & InputB;        // bitwise and
     OR  : Out = InputA | InputB;        // bitwise or
     NOT : Out = ~InputA;                // bitwise not

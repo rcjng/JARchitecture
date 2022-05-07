@@ -187,9 +187,9 @@ task test_alu_func;
     3: expected = INPUTA | INPUTB;      // OR
     4: expected = INPUTA ^ INPUTB;      // XOR
     5: expected = ~INPUTA;              // NOT
-    6: expected = INPUTA << INPUTB;     // LSH
-    7: expected = INPUTA >> INPUTB;     // RSH
-    8: begin
+    6: expected = INPUTA << INPUTB;     // LSL
+    7: expected = INPUTA >> INPUTB;     // LSR
+    8: begin                            // SLT
       if (INPUTA < INPUTB) begin
         expected = 8'b1;
       end
@@ -197,7 +197,7 @@ task test_alu_func;
         expected = 8'b0;
       end
     end
-    9: begin
+    9: begin                            // SEQ
       if (INPUTA == INPUTB) begin
         expected = 8'b1;
       end

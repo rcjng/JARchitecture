@@ -52,7 +52,7 @@ with (
     open(sys.argv[1], "r") as read,
     open(sys.argv[2], "w") as write
 ):
-
+    count = 0
 # with automatically handles file (no need for open and close)
     line = read.readline() # read a line
     # for every line
@@ -68,15 +68,15 @@ with (
 
         # store comment if comment exists
         if len(line) == 1:
-            comment = '\n'
+            comment = ';\n'
         else:
-            comment = " // " + line[1].strip() + '\n'
+            comment = "; // " + line[1].strip() + '\n'
         
         # split assemblyruction into arguments
         assembly = assembly.split()
 
         # initialize the string that contains the machine code binary
-        machine = ''
+        machine = str(count) + ": InstOut = 'b"
 
         # write the opcode
         if assembly[0] in opcode:
@@ -160,3 +160,5 @@ with (
 
         # read the next line
         line = read.readline()
+
+        count = count + 1

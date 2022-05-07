@@ -148,9 +148,9 @@ with (
 
         # concatenate remaining bits depending on type
         machine += bits
-
-        # concatenate comment
-        machine += comment
+        machine += '\n'
+        # # concatenate comment
+        # machine += comment
 
         # write the line into the desired file
         write.write(machine)
