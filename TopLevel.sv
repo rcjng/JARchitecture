@@ -57,10 +57,8 @@ logic       Ctrl1_MemWrEn_out;   // data_memory write enable
 logic       Ctrl1_LoadInst_out;  // TODO: Why both of these?
 logic       Ctrl1_RegDst_out;
 logic       Ctrl1_Ack_out;       // Done with program?
-logic [1:0] Ctrl1_LUTSel_out;
 logic [1:0] Ctrl1_AInSel_out;
 logic [1:0] Ctrl1_BInSel_out;
-logic [3:0] Ctrl1_TargSel_out;   // one trick to help with target range
 logic [3:0] Ctrl1_ALUOp_out;
 
 // Register file outputs

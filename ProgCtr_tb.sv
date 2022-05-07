@@ -12,7 +12,7 @@ bit Clk;
 bit BranchAbsEn;
 bit BranchRelEn;
 bit ALU_flag;
-bit [7:0] RelTarget;
+bit [5:0] RelTarget;
 bit [9:0] AbsTarget;
 logic [9:0] NextInstructionIndex;
 
@@ -128,12 +128,12 @@ initial begin
   ALU_flag = '0;
   BranchAbsEn = '0;
   BranchRelEn = '1;
-  RelTarget = 6'b111011;  // -5
+  RelTarget = 6'b000101;  // 5
 
   #1 Clk = '1;
   #1 Clk = '0;
-  $display("Checking that relative branch went back");
-  assert (NextInstructionIndex == 'd12);
+  $display("Checking that relative branch went forward");
+  assert (NextInstructionIndex == 'd22);
 
   $display("All checks passed.");
 end

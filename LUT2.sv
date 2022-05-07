@@ -17,10 +17,10 @@ module LUT2(
 always_comb begin
 
   case(Addr)
-    4'b0000: Target = 10'h001; 
-    4'b0001: Target = 10'h001;
-    4'b0010: Target = 10'h001;
-    4'b0011: Target = 10'h001;
+    4'b0000: Target = 10'd14; 
+    4'b0001: Target = 10'd8;
+    4'b0010: Target = 10'd80;
+    4'b0011: Target = 10'd62;
     4'b0100: Target = 10'h001;
     4'b0101: Target = 10'h001;
     4'b0110: Target = 10'h001;

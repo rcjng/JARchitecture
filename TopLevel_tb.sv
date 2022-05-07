@@ -36,8 +36,17 @@ TopLevel DUT (
 
 // This is the important part of the testbench, where logic might be added
 initial begin
-  #10 $display("r2 = %d", DUT.RF1.Registers[2]);
-      $display("mem[7] = %d", DUT.DM1.Core[7]);
+  #10 $display("r0 = %d", DUT.RF1.Registers[0]);
+      $display("r1 = %d", DUT.RF1.Registers[1]);
+      $display("r2 = %d", DUT.RF1.Registers[2]);
+      $display("r3 = %d", DUT.RF1.Registers[3]);
+      $display("r4 = %d", DUT.RF1.Registers[4]);
+      $display("r5 = %d", DUT.RF1.Registers[5]);
+      $display("r6 = %d", DUT.RF1.Registers[6]);
+      $display("r7 = %d", DUT.RF1.Registers[7]);
+      $display("mem[33] = %d", DUT.DM1.Core[33]);
+      $display("mem[34] = %d", DUT.DM1.Core[34]);
+      $display("mem[35] = %d", DUT.DM1.Core[35]);
   #10 Reset = 'b0;
   #10 Req   = 'b1;
 
@@ -47,8 +56,17 @@ initial begin
   // Wait for done flag, then display results
   wait (Ack);
   #10 $display("------------------------------------------");
-  #10 $display("r2 = %d", DUT.RF1.Registers[2]);
-      $display("mem[7] = %d", DUT.DM1.Core[7]);
+  #10 $display("r0 = %d", DUT.RF1.Registers[0]);
+      $display("r1 = %d", DUT.RF1.Registers[1]);
+      $display("r2 = %d", DUT.RF1.Registers[2]);
+      $display("r3 = %d", DUT.RF1.Registers[3]);
+      $display("r4 = %d", DUT.RF1.Registers[4]);
+      $display("r5 = %d", DUT.RF1.Registers[5]);
+      $display("r6 = %d", DUT.RF1.Registers[6]);
+      $display("r7 = %d", DUT.RF1.Registers[7]);
+      $display("mem[33] = %d", DUT.DM1.Core[33]);
+      $display("mem[34] = %d", DUT.DM1.Core[34]);
+      $display("mem[35] = %d", DUT.DM1.Core[35]);
       $display("last instruction = %d || sim time %t",DUT.PC1.ProgCtr,$time);
 
   // Note: $stop acts like a breakpoint, pausing the simulation
