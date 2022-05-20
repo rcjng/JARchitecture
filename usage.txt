@@ -1,0 +1,22 @@
+JARssembler
+
+JARssembler takes a text file of JAR assembly code as input, converts the assembly code to machine code, and writes the machine code to a specified file.
+C-style comments in the assembly code are allowed and retained during assembly and the assembler is intended to work on assembly code files with a single instruction on each line with no empty lines.
+ 
+JARssembler is written 100% in Python 3 and has been tested and verified to function correctly in Python 3.10.2 on Windows 10
+
+Installation:
+On Windows, install Python 3.10.2, the assembler may work on other, older versions and/or other operating systems but it is guaranteed to work on Windows with Python 3.10.2 
+
+Execution:
+The assembler can be invoked using the python command in the command line:
+python JARssembler.py [input file / assembly] [output file / machine code]
+
+To assemble the example files given, the following command was executed:
+python JARssembler.py assembly_code_example.txt machine_code_example.txt
+
+Error checking and handling:
+The assembled machine code is also printed to stdout for convenience.
+In the event that errors occur due to malformed or syntactically incorrect input assembly code, errors will also be printed to stdout. 
+Note that the assembler only handles basic errors such as invalid/unknown instructions, but may not detect and handle errors like invalid/unintended immediates, registers, etc.
+

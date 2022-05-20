@@ -1,0 +1,519 @@
+ldi #30                         // r0 = 30
+mov $1                          // r1 = i = 30
+ldi #60                         // LOOP: r0 = 60
+slt $1                          // check i < 60. if true, continue computation…
+brl 010000                      // brl DONE
+ldr $1                          // r0 = mem[i]
+mov $2                          // r2 = low = mem[i]
+ldi #1                          // r0 = 1
+add $1                          // r0 = i + 1
+ldr $0                          // r0 = mem[i+1]
+mov $3                          // r3 = upp = mem[i+1]
+ldi #1                          // r0 = ’b0000_0001
+and $3                          // r0 = ’b0000_0001 & upp
+mov $4                          // r4 = ps = ’b0000_0001 & upp
+ldi #3                          // r0 = 3
+lsl $4                          // r0 = ps << 3
+mov $4                          // ps = ps << 3
+ldi #16                         // r0 = ‘b0001_0000
+and $2                          // r0 = low[4]
+mov $5                          // r5 = temp = low[4]
+ldi #2                          // r0 = 2
+lsr $5                          // r0 = temp >> 2            [r5 = 0 0 0 0 0  p4 0 0]
+ior $4                          // r0 = (temp >> 2)  | ps
+mov $4                          // ps = (temp >> 2)  | ps    [r4 = 0 0 0 0 p8 p4 0 0]
+ldi #7                          // r0 = ‘b0000_0111
+and $2                          // r0 = low[2:0]
+mov $5                          // r5 = temp = low[2:0]
+ldi #1                          // r0 = 1
+lsr $5                          // r0 = temp >> 1            [r5 = 0 0 0 0 0  0  p2 p1]
+ior $4                          // r0 = (temp >> 1) | ps
+mov $4                          // ps = (temp >> 1) | ps     [r4 = 0 0 0 0 p8 p4 p2 p1]
+ldi #1                          // r0 = ‘b0000_0001
+mov $6                          // r6 = 1
+ldi #7                          // r0 = 7
+lsr $3                          // r0 = upp >> 7
+and $6                          // r0 = upp[7]
+mov $5                          // r5 = ps’ = upp[7]
+ldi #6                          // r0 = 6
+lsr $3                          // r0 = upp >> 6
+and $6                          // r0 = upp[6]
+xor $5                          // r0 = ps’ ^ upp[6]
+mov $5                          // ps’ = ps’ ^ upp[6]
+ldi #5                          // r0 = 5
+lsr $3                          // r0 = upp[5] >> 5
+and $6                          // r0 = upp[5]
+xor $5                          // r0 = ps’ ^ upp[5]
+mov $5                          // ps’ = ps’ ^ upp[5]
+ldi #4                          // r0 = 4
+lsr $3                          // r0 = upp >> 4
+and $6                          // r0 = upp[4]
+xor $5                          // r0 = ps’ ^ upp[4]
+mov $5                          // ps’ = ps’ ^ upp[4]
+ldi #3                          // r0 = 3
+lsr $3                          // r0 = upp >> 3
+and $6                          // r0 = upp[3]
+xor $5                          // r0 = ps’ ^ upp[3]
+mov $5                          // ps’ = ps’ ^ upp[3]
+ldi #2                          // r0 = 2
+lsr $3                          // r0 = upp >> 2
+and $6                          // r0 = upp[2]
+xor $5                          // r0 = ps’ ^ upp[2]
+mov $5                          // ps’ = ps’ ^ upp[2]
+ldi #1                          // r0 = 1
+lsr $3                          // r0 = upp >> 1
+and $6                          // r0 = upp[1]
+xor $5                          // r0 = ps’ ^ upp[1]
+mov $5                          // ps’ = ps’ ^ upp[1]
+ldi #3                          // r0 = 3
+lsl $5                          // r0 = ps’ << 3
+mov $5                          // ps’ = [0 0 0 0 p8’ 0 0 0]
+ldi #7                          // r0 = 7
+lsr $3                          // r0 = upp >> 7
+and $6                          // r0 = upp[7]
+mov $7                          // r7 = temp = upp[7]
+ldi #6                          // r0 = 6
+lsr $3                          // r0 = upp >> 6
+and $6                          // r0 = upp[6]
+xor $7                          // r0 = temp ^ upp[6]
+mov $7                          // temp = temp ^ upp[6]
+ldi #5                          // r0 = 5
+lsr $3                          // r0 = upp >> 5
+and $6                          // r0 = upp[5]
+xor $7                          // r0 = temp ^ upp[5]
+mov $7                          // temp = temp ^ upp[5]
+ldi #4                          // r0 = 4
+lsr $3                          // r0 = upp >> 4
+and $6                          // r0 = upp[4]
+xor $7                          // r0 = temp ^ upp[4]
+mov $7                          // temp = temp ^ upp[4]
+ldi #7                          // r0 = 7
+lsr $2                          // r0 = low >> 7
+and $6                          // r0 = low[7]
+xor $7                          // r0 = temp ^ low[7]
+mov $7                          // temp = temp ^ low[7]
+ldi #6                          // r0 = 6
+lsr $2                          // r0 = low >> 6
+and $6                          // r0 = low[6]
+xor $7                          // r0 = temp ^ low[6]
+mov $7                          // temp = temp ^ low[6]
+ldi #5                          // r0 = 5
+lsr $2                          // r0 = low >> 5
+and $6                          // r0 = low[5]
+xor $7                          // r0 = temp ^ low[5]
+mov $7                          // temp = temp ^ low[5]
+ldi #2                          // r0 = 2
+lsl $7                          // r0 = temp << 2
+ior $5                          // r0 = (temp << 2) | ps’
+mov $5                          // ps’ = (temp << 2) | ps’
+ldi #7                          // r0 = 7
+lsr $3                          // r0 = upp >> 7
+and $6                          // r0 = upp[7]
+mov $7                          // r7 = temp = upp[7]
+ldi #6                          // r0 = 6
+lsr $3                          // r0 = upp >> 6
+and $6                          // r0 = upp[6]
+xor $7                          // r0 = temp ^ upp[6]
+mov $7                          // temp = temp ^ upp[6]
+ldi #3                          // r0 = 3
+lsr $3                          // r0 = upp >> 3
+and $6                          // r0 = upp[3]
+xor $7                          // r0 = temp ^ upp[3]
+mov $7                          // temp = temp ^ upp[3]
+ldi #2                          // r0 = 2
+lsr $3                          // r0 = upp >> 2
+and $6                          // r0 = upp[2]
+xor $7                          // r0 = temp ^ upp[2]
+mov $7                          // temp = temp ^ upp[2]
+ldi #7                          // r0 = 7
+lsr $2                          // r0 = low >> 7
+and $6                          // r0 = low[7]
+xor $7                          // r0 = temp ^ low[7]
+mov $7                          // temp = temp ^ low[7]
+ldi #6                          // r0 = 6
+lsr $2                          // r0 = low >> 6
+and $6                          // r0 = low[6]
+xor $7                          // r0 = temp ^ low[6]
+mov $7                          // temp = temp ^ low[6]
+ldi #3                          // r0 = 3
+lsr $2                          // r0 = low >> 3
+and $6                          // r0 = low[3]
+xor $7                          // r0 = temp ^ low[3]
+mov $7                          // temp = temp ^ low[3]
+ldi #1                          // r0 = 1
+lsl $7                          // r0 = temp << 1
+ior $5                          // r0 = (temp << 1) | ps’
+mov $5                          // ps’ = (temp << 1) | ps’
+ldi #7                          // r0 = 7
+lsr $3                          // r0 = upp >> 7
+and $6                          // r0 = upp[7]
+mov $7                          // r7 = temp = upp[7]
+ldi #5                          // r0 = 5
+lsr $3                          // r0 = upp[5] >> 5
+and $6                          // r0 = upp[5]
+xor $7                          // r0 = temp ^ upp[5]
+mov $7                          // temp = temp ^ upp[5]
+ldi #3                          // r0 = 3
+lsr $3                          // r0 = upp >> 3
+and $6                          // r0 = upp[3]
+xor $7                          // r0 = temp ^ upp[3]
+mov $7                          // temp = temp ^ upp[3]
+ldi #1                          // r0 = 1
+lsr $3                          // r0 = upp >> 1
+and $6                          // r0 = upp[1]
+xor $7                          // r0 = temp ^ upp[1]
+mov $7                          // temp = temp ^ upp[1]
+ldi #7                          // r0 = 7
+lsr $2                          // r0 = low >> 7
+and $6                          // r0 = low[7]
+xor $7                          // r0 = temp ^ low[7]
+mov $7                          // temp = temp ^ low[7]
+ldi #5                          // r0 = 5
+lsr $2                          // r0 = low >> 5
+and $6                          // r0 = low[5]
+xor $7                          // r0 = temp ^ low[5]
+mov $7                          // temp = temp ^ low[5]
+ldi #3                          // r0 = 3
+lsr $2                          // r0 = low >> 3
+and $6                          // r0 = low[3]
+xor $7                          // r0 = temp ^ low[3]
+mov $7                          // temp = temp ^ low[3]
+ldi #0                          // r0 = 0
+add $7                          // r0 = temp
+ior $5                          // r0 = temp | ps’
+mov $5                          // ps’ = temp | ps’
+xor $4                          // r0 = ps’ ^ ps
+mov $4                          // r4 = s = ps’ ^ ps
+ldi #1                          // r0 = 1
+lsl $4                          // r0 = s << 1
+mov $4                          // s = s << 1
+ldi #0                          // r0 = 0
+add $2                          // r0 = low
+and $6                          // r0 = low[0]
+mov $5                          // temp = p0
+ldi #7                          // r0 = 7
+lsr $3                          // r0 = upp >> 7
+and $6                          // r0 = upp[7]
+mov $7                          // r7 = ps’ = upp[7]
+ldi #6                          // r0 = 6
+lsr $3                          // r0 = upp >> 6
+and $6                          // r0 = upp[6]
+xor $7                          // r0 = ps' ^ upp[6]
+mov $7                          // ps' = ps' ^ upp[6]
+ldi #5                          // r0 = 5
+lsr $3                          // r0 = upp >> 5
+and $6                          // r0 = upp[5]
+xor $7                          // r0 = ps' ^ upp[5]
+mov $7                          // ps' = ps' ^ upp[5]
+ldi #4                          // r0 = 4
+lsr $3                          // r0 = upp >> 4
+and $6                          // r0 = upp[4]
+xor $7                          // r0 = ps' ^ upp[4]
+mov $7                          // ps' = ps' ^ upp[4]
+ldi #3                          // r0 = 3
+lsr $3                          // r0 = upp >> 3
+and $6                          // r0 = upp[3]
+xor $7                          // r0 = ps' ^ upp[3]
+mov $7                          // ps' = ps' ^ upp[3]
+ldi #2                          // r0 = 2
+lsr $3                          // r0 = upp >> 2
+and $6                          // r0 = upp[2]
+xor $7                          // r0 = ps' ^ upp[2]
+mov $7                          // ps' = ps' ^ upp[2]
+ldi #1                          // r0 = 1
+lsr $3                          // r0 = upp >> 1
+and $6                          // r0 = upp[1]
+xor $7                          // r0 = ps' ^ upp[1]
+mov $7                          // ps' = ps' ^ upp[1]
+ldi #0                          // r0 = 0
+add $3                          // r0 = upp
+and $6                          // r0 = upp[0]
+xor $7                          // r0 = ps' ^ upp[0]
+mov $7                          // ps' = ps' ^ upp[0]
+ldi #7                          // r0 = 7
+lsr $2                          // r0 = low >> 7
+and $6                          // r0 = low[7]
+xor $7                          // r0 = ps' ^ low[7]
+mov $7                          // ps' = ps' ^ low[7]
+ldi #6                          // r0 = 6
+lsr $2                          // r0 = low >> 6
+and $6                          // r0 = low[6]
+xor $7                          // r0 = ps' ^ low[6]
+mov $7                          // ps' = ps' ^ low[6]
+ldi #5                          // r0 = 5
+lsr $2                          // r0 = low >> 5
+and $6                          // r0 = low[5]
+xor $7                          // r0 = ps' ^ low[5]
+mov $7                          // ps' = ps' ^ low[5]
+ldi #4                          // r0 = 4
+lsr $2                          // r0 = low >> 4
+and $6                          // r0 = low[4]
+xor $7                          // r0 = ps' ^ low[4]
+mov $7                          // ps' = ps' ^ low[4]
+ldi #3                          // r0 = 3
+lsr $2                          // r0 = low >> 3
+and $6                          // r0 = low[3]
+xor $7                          // r0 = ps' ^ low[3]
+mov $7                          // ps' = ps' ^ low[3]
+ldi #2                          // r0 = 2
+lsr $2                          // r0 = low >> 2
+and $6                          // r0 = low[2]
+xor $7                          // r0 = ps' ^ low[2]
+mov $7                          // ps' = ps' ^ low[2]
+ldi #1                          // r0 = 1
+lsr $2                          // r0 = low >> 1
+and $6                          // r0 = low[1]
+xor $7                          // r0 = ps' ^ low[1]
+mov $7                          // ps' = ps' ^ low[1]
+xor $5                          // r0 = p0' ^ p0
+ior $4                          // r0 = {s, p0' ^ p0}
+mov $4                          // r4 = {s, p0' ^ p0}
+ldi #5                          // r0 = 5
+lsr $3                          // r0 = upp >> 5
+mov $6                          // top = upp >> 5
+ldi #7                          // r0 = 'b00000111
+and $6                          // r0 = top & 'b00000111
+mov $6                          // top = top & 'b00000111
+ldi #3                          // r0 = 3
+lsl $3                          // r0 = upp << 3
+mov $7                          // bot = upp << 3
+ldi #240                        // r0 = 'b11110000
+and $7                          // r0 = bot & 'b11110000
+mov $7                          // bot = bot & 'b11110000 
+ldi #0                          // r0 = 0
+add $6                          // r0 = top
+mov $3                          // r3 = top
+ldi #4                          // r0 = 4
+lsr $2                          // r0 = low >> 4
+ior $7                          // r0 = bot | (low >> 4)
+mov $7                          // bot = bot | (low >> 4)
+ldi #254                        // r0 = 'b11111110
+and $7                          // r0 = bot & 'b11111110
+mov $7                          // r7 = bot & 'b11111110
+ldi #3                          // r0 = 3
+lsr $2                          // r0 = low >> 3
+mov $5                          // r5 = low >> 3
+ldi #1                          // r0 = 'b00000001
+and $5                          // r0 = (low >> 3) & 'b00000001
+ior $7                          // r0 = ((low >> 3) & 'b00000001) | bot
+mov $2                          // r2 = ((low >> 3) & 'b00000001) | bot
+ldi #1                          // r0 = 1
+and $4                          // r0 = s[0]
+mov $5                          // r5 = s[0]
+ldi #0                          // r0 = 0
+seq $5                          // if g == 0
+brr #14                         // brr G0_FALSE
+ldi #1                          // r0 = 1
+lsr $4                          // r0 = s >> 1
+mov $5                          // r5 = s >> 1
+ldi #0                          // r0 = 0
+seq $5                          // if s == 0
+brr #3                          // brr G0_S0_FALSE
+slt $0                          
+brl 010001                      // brl COND_DONE                   
+ldi #128                        // G0_S0_FALSE: r0 = 'b10000000
+ior $3                          // r0 = top | 'b10000000
+mov $3                          // top = top | 'b10000000
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #64                         // G0_FALSE: r0 = 'b01000000
+ior $3                          // r0 = top | 'b01000000
+mov $3                          // top = top | 'b01000000
+ldi #30                         // r0 = 'b00011110
+and $4                          // r0 = s[4:1]
+mov $5                          // r5 = s[4:1]
+ldi #1                          // r0 = 1
+lsr $5                          // r0 = s[4:1] >> 1
+mov $5                          // r5 = s[4:1] >> 1
+ldi #0                          // r0 = 0
+seq $5                          // if r5 == 0
+brr #3                          // brr G1_S0_FALSE
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #1                          // G1_S0_FALSE: r0 = 1
+seq $5                          // if s == 1
+brr #3                          // brr G1_S1_FALSE
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #2                          // G1_S1_FALSE: r0 = 2
+seq $5                          // if s == 2
+brr #3                          // brr G1_S2_FALSE
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #3                          // G1_S2_FALSE: r0 = 3
+seq $5                          // if s == 3
+brr #12                         // brr G1_S3_FALSE
+not $2                          // r0 = ~bot
+mov $6                          // r6 = ~bot
+ldi #1                          // r0 = 'b00000001
+and $6                          // r0 = 'b00000001 & ~bot
+mov $6                          // r6 = 'b00000001 & ~bot
+ldi #254                        // r0 = 'b11111110
+and $2                          // r0 = 'b11111110 & bot
+ior $6                          // r0 = ('b11111110 & bot) | ('b00000001 & ~bot)
+mov $2                          // bot[0] = ~bot[0]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #4                          // G1_S3_FALSE: r0 = 4
+seq $5                          // if s == 4
+brr #3                          // brr G1_S4_FALSE
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #5                          // G1_S4_FALSE: r0 = 5
+seq $5                          // if s == 5
+brr #12                         // brr G1_S5_FALSE
+not $2                          // r0 = ~bot
+mov $6                          // r6 = ~bot
+ldi #2                          // r0 = 'b00000010
+and $6                          // r0 = 'b00000010 & ~bot
+mov $6                          // r6 = 'b00000010 & ~bot
+ldi #253                        // r0 = 'b11111101
+and $2                          // r0 = 'b11111101 & bot
+ior $6                          // r0 = ('b11111101 & bot) | ('b00000010 & ~bot)
+mov $2                          // bot[1] = ~bot[1]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #6                          // G1_S5_FALSE: r0 = 6
+seq $5                          // if s == 6
+brr #12                         // brr G1_S6_FALSE
+not $2                          // r0 = ~bot
+mov $6                          // r6 = ~bot
+ldi #4                          // r0 = 'b00000100
+and $6                          // r0 = 'b00000100 & ~bot
+mov $6                          // r6 = 'b00000100 & ~bot
+ldi #251                        // r0 = 'b11111011
+and $2                          // r0 = 'b11111011 & bot
+ior $6                          // r0 = ('b11111011 & bot) | ('b00000100 & ~bot)
+mov $2                          // bot[2] = ~bot[2]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #7                          // G1_S6_FALSE: r0 = 7
+seq $5                          // if s == 7
+brr #12                         // brr G1_S7_FALSE
+not $2                          // r0 = ~bot
+mov $6                          // r6 = ~bot
+ldi #8                          // r0 = 'b00001000
+and $6                          // r0 = 'b00001000 & ~bot
+mov $6                          // r6 = 'b00001000 & ~bot
+ldi #247                        // r0 = 'b11110111
+and $2                          // r0 = 'b11110111 & bot
+ior $6                          // r0 = ('b11110111 & bot) | ('b00001000 & ~bot)
+mov $2                          // bot[3] = ~bot[3]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #8                          // G1_S7_FALSE: r0 = 8
+seq $5                          // if s == 8
+brr #3                          // brr G1_S8_FALSE
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #9                          // G1_S8_FALSE: r0 = 9
+seq $5                          // if s == 9
+brr #12                         // brr G1_S9_FALSE
+not $2                          // r0 = ~bot
+mov $6                          // r6 = ~bot
+ldi #16                         // r0 = 'b00010000
+and $6                          // r0 = 'b00010000 & ~bot
+mov $6                          // r6 = 'b00010000 & ~bot
+ldi #239                        // r0 = 'b11101111
+and $2                          // r0 = 'b11101111 & bot
+ior $6                          // r0 = ('b11101111 & bot) | ('b00010000 & ~bot)
+mov $2                          // bot[4] = ~bot[4]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #10                         // G1_S9_FALSE: r0 = 10
+seq $5                          // if s == 10
+brr #12                         // brr G1_S10_FALSE
+not $2                          // r0 = ~bot
+mov $6                          // r6 = ~bot
+ldi #32                         // r0 = 'b00100000
+and $6                          // r0 = 'b00100000 & ~bot
+mov $6                          // r6 = 'b00100000 & ~bot
+ldi #223                        // r0 = 'b11011111
+and $2                          // r0 = 'b11011111 & bot
+ior $6                          // r0 = ('b11011111 & bot) | ('b00100000 & ~bot)
+mov $2                          // bot[5] = ~bot[5]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #11                         // G1_S10_FALSE: r0 = 11
+seq $5                          // if s == 11
+brr #12                         // brr G1_S11_FALSE
+not $2                          // r0 = ~bot
+mov $6                          // r6 = ~bot
+ldi #64                         // r0 = 'b01000000
+and $6                          // r0 = 'b01000000 & ~bot
+mov $6                          // r6 = 'b01000000 & ~bot
+ldi #191                        // r0 = 'b10111111
+and $2                          // r0 = 'b10111111 & bot
+ior $6                          // r0 = ('b10111111 & bot) | ('b01000000 & ~bot)
+mov $2                          // bot[6] = ~bot[6]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #12                         // G1_S11_FALSE: r0 = 12
+seq $5                          // if s == 12
+brr #12                         // brr G1_S12_FALSE
+not $2                          // r0 = ~bot
+mov $6                          // r6 = ~bot
+ldi #128                        // r0 = 'b10000000
+and $6                          // r0 = 'b10000000 & ~bot
+mov $6                          // r6 = 'b10000000 & ~bot
+ldi #127                        // r0 = 'b01111111
+and $2                          // r0 = 'b01111111 & bot
+ior $6                          // r0 = ('b01111111 & bot) | ('b10000000 & ~bot)
+mov $2                          // bot[7] = ~bot[7]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #13                         // G1_S12_FALSE: r0 = 13
+seq $5                          // if s == 13
+brr #12                         // brr G1_S13_FALSE
+not $3                          // r0 = ~top
+mov $6                          // r6 = ~top
+ldi #1                          // r0 = 'b00000001
+and $6                          // r0 = 'b00000001 & ~top
+mov $6                          // r6 = 'b00000001 & ~top
+ldi #254                        // r0 = 'b11111110
+and $3                          // r0 = 'b11111110 & top
+ior $6                          // r0 = ('b11111110 & top) | ('b00000001 & ~top)
+mov $3                          // top[0] = ~top[0]
+slt $0
+brl 010001                      // brl COND_DONE
+ldi #14                         // G1_S13_FALSE: r0 = 14
+seq $5                          // if s == 14
+brr #12                         // brr G1_S14_FALSE
+not $3                          // r0 = ~top
+mov $6                          // r6 = ~top
+ldi #2                          // r0 = 'b00000010
+and $6                          // r0 = 'b00000010 & ~top
+mov $6                          // r6 = 'b00000010 & ~top
+ldi #253                        // r0 = 'b11111101
+and $3                          // r0 = 'b11111101 & top
+ior $6                          // r0 = ('b11111101 & top) | ('b00000010 && ~top)
+mov $3                          // top[1] = ~top[1]
+slt $0
+brl 010001                      // brl COND_DONE
+not $3                          // G1_S14_FALSE: r0 = ~top
+mov $6                          // r6 = ~top
+ldi #4                          // r0 = 'b00000100
+and $6                          // r0 = 'b00000100 & ~top
+mov $6                          // r6 = 'b00000100 & ~top
+ldi #251                        // r0 = 'b11111011
+and $3                          // r0 = 'b11111011 & top
+ior $6                          // r0 = ('b11111011 & top) | ('b00000100 & ~top)
+mov $3                          // top[2] = ~top[2]
+ldi #30                         // COND_DONE: r0 = 30
+sub $1                          // r0 = i - 30
+mov $6                          // r6 = i - 30
+ldi #29                         // r0 = 29
+sub $1                          // r0 = i - 29
+mov $7                          // r7 = i - 29
+ldi #0                          // r0 = 0
+add $2                          // r0 = bot
+str $6                          // mem[i-30] = bot
+ldi #0                          // r0 = 0
+add $3                          // r0 = top
+str $7                          // mem[i-29] = top
+ldi #2                          // r0 = 2
+add $1                          // r0 = i + 2
+mov $1                          // i  = i + 2
+slt $0
+brl 010010                      // brl LOOP   
+hlt                             // halt

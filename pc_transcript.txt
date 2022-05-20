@@ -1,0 +1,15 @@
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# Initialize Testbench.
+# Checking Reset behavior
+# Checking that nothing happens before Start
+# Checking that nothing happened during Start
+# Checking that first Start went to first program
+# Checking that no branch advanced by 1
+# Checking that absolute branch went to target
+# Checking that relative branch with no ALU flag did jump
+# Checking that relative branch with ALU flag did not jump
+# Checking that pc increments correctly
+# Checking that relative branch went forward
+# All checks passed.

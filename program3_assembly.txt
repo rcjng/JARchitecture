@@ -8,13 +8,13 @@ ldi #0                         	// $0 = 0
 mov $1                         	// $1 (i) = $0
 ldi #32                        	// lt32-1: $0 = 32
 slt $1                        	// if $1 < $0 then 1 else 0
-brr #48				   	// brr #48
+brr #48				   	        // brr #48
 ldi #0                         	// $0 = 0
 mov $2                         	// $2 (location) = 0
 mov $3                         	// $3 (count) = 0
 ldi #4                        	// lt4-1: $0 = 4
 slt $2                        	// if $2 < $0 then 1 else 0
-brr #19                          	// brr #19
+brr #19                         // brr #19
 ldr $1                         	// $0 = data_mem[$1 (i)]
 mov $4                         	// $4 = $0
 ldi #0                         	// $0 = 0
@@ -22,47 +22,47 @@ add $2                         	// $0 = $2 (location)
 lsr $4                       	// $0 = data_mem[$1 (i)] >> $2 (location)
 mov $4                         	// $4 = $0
 ldi #31                        	// $0 = 31 (b’00011111)
-and $4                          	// $0 = $0 & $4
+and $4                          // $0 = $0 & $4
 seq $7                        	// if ($7 == $0) {
-brr #4                           	// brr #4
-ldi #1                         	//  $0 = 1
-add $3                          	//  $0 = $3 + 1 *$3 = count
-mov $3                         	//  $3 = $0
-ldi #1                         	//  $0 = 1
-add $2                          	//  $0 = $2 + 1 *$2 = location
-mov $2                         	//  $2 = $0
-slt $0                        	//  if $0 < $0 then 1 else 0
+brr #4                          // brr #4
+ldi #1                         	// $0 = 1
+add $3                          // $0 = $3 + 1 *$3 = count
+mov $3                         	// $3 = $0
+ldi #1                         	// $0 = 1
+add $2                          // $0 = $2 + 1 *$2 = location
+mov $2                         	// $2 = $0
+slt $0                        	// if $0 < $0 then 1 else 0
 brl 100000				    	// brl to address 14
 ldi #0                         	// $0 = 0  
 seq $3                        	// $0 = $3 (count) == 0
 mov $6                         	// $6 = $0
 ldi #0                         	// $0 = 0
 seq $6                        	// $0 = $6 == $0 (0)
-brr #13  				   	// brr #13
+brr #13  				   	    // brr #13
 ldi #33                        	// $0 = 33
 mov $5                         	// $5 = 33
 ldr $0                         	// $0 = data_mem[$0]
-add $3                          	// $0 = $0 + $3
+add $3                          // $0 = $0 + $3
 str $5                        	// data_mem[$5 (33)] = $0
 ldi #1                         	// $0 = 1
 mov $6                         	// $6 = 1
 ldi #34                        	// $0 = 34
 mov $5                         	// $5 = 34
 ldr $0                        	// $0 = data_mem[$0]
-add $6                          	// $0 = $0 + 1
+add $6                          // $0 = $0 + 1
 str $5                        	// data_mem[$5] = $0
 ldi #1                         	// $0 = 1
-add $1                          	// $0 = i + 1
+add $1                          // $0 = i + 1
 mov $1                         	// i = i + 1     
 slt $0                        	// if $0 < $0 then 1 else 0
-brl 100001                       	// brl to address 8
+brl 100001                      // brl to address 8
 ldi #0                         	// $0 = 0
 mov $3                         	// $3 (count) = 0
 ldi #0                         	// $0 = 0
 mov $1                         	// $1 (i) = $0
 ldi #31                        	// lt31-1: $0 = 31
 slt $1                        	// if $1 < $0 then 1 else 0
-brr #40                          	// brr #40
+brr #40                         // brr #40
 ldi #0                         	// $0 = 0
 mov $2                         	// $2 (location) = 0
 ldr $1                         	// $0 = data_mem[$1 (i)]
@@ -71,41 +71,41 @@ ldi #4                         	// $0 = 4
 lsl $4                       	// $0 = data_mem[$1 (i)] << 4
 mov $5                         	// $5 = $0
 ldi #1                         	// $0 = 1
-add $1                            // $0 = $1 (i) + 1
+add $1                          // $0 = $1 (i) + 1
 ldr $0                         	// $0 = data_mem[$0 (i+1)]
 mov $4                         	// $4 = $0
 ldi #4                         	// $0 = 4
 lsr $4                       	// $0 = data_mem[(i+1)] >> 4
-and $5                          	// $0 = $0 | $5
+and $5                          // $0 = $0 | $5
 mov $5                         	// $5 = $0
 ldi #4                         	// lt4-2: $0 = 4
 slt $2                        	// if $2 < $0 then 1 else 0
-brr #17                          	// brr #17
+brr #17                         // brr #17
 ldi #0                         	// $0 = 0
-add $2                          	// $0 = $2 (location)
+add $2                          // $0 = $2 (location)
 lsr $5                       	// $0 = $5 >> $2 (location)
 mov $4                         	// $4 = $0
 ldi #31                        	// $0 = 31 (b’00011111)
-and $4                          	// $0 = $0 & $4
+and $4                          // $0 = $0 & $4
 seq $7                        	// if ($7 == $0) {
-brr #4                           	// brr #4
+brr #4                          // brr #4
 ldi #1                         	//  $0 = 1
-add $3                          	//  $0 = $3 + 1 *$3 = count
+add $3                          //  $0 = $3 + 1 *$3 = count
 mov $3                         	//  $3 = $0
 ldi #1                         	//  $0 = 1
-add $2                          	//  $0 = $2 + 1 *$2 = location
+add $2                          //  $0 = $2 + 1 *$2 = location
 mov $2                         	//  $2 = $0
 slt $0                        	// if $0 < $0 then 1 else 0
-brl 100010                       	// brl to address 80
+brl 100010                      // brl to address 80
 ldi #1                        	// $0 = 1
-add $1                          	// $0 = i + 1
+add $1                          // $0 = i + 1
 mov $1                         	// i = i + 1
 slt $0                        	// if $0 < $0 then 1 else 0
-brl 100011                       	// brl to address 62
+brl 100011                      // brl to address 62
 ldi #35                        	// $0 = 35
 mov $6                         	// $6 = 35
 ldi #33                        	// $0 = 33
 ldr $0                         	// $0 = data_mem[$0]
-add $3                          	// $0 = $0 + $3 (count)
+add $3                          // $0 = $0 + $3 (count)
 str $6                        	// data_mem[35] = $0
 hlt                            	// halt

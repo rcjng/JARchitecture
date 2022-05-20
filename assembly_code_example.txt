@@ -1,0 +1,27 @@
+ldi #0
+mov $1
+mov $2
+ldi #5
+slt $1
+brr #10
+ldi #2
+add $2
+mov $2
+ldi #1
+add $1
+mov $1
+ldi #0
+slt $0
+brl 000000
+ldi #7
+mov $3
+ldi #2
+add $2
+str $3
+ldi #2
+ldr $3
+mov $2
+ldi #3
+add $2
+mov $2
+hlt	// halt

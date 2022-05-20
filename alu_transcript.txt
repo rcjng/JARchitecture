@@ -1,0 +1,15 @@
+#                 3000 YAY!! inputs = 01 01, output = 02, opcode = 0000, cond x
+#                 5000 YAY!! inputs = 04 01, output = 03, opcode = 0001, cond x
+#                 7000 YAY!! inputs = f0 cc, output = c0, opcode = 0010, cond x
+#                 9000 YAY!! inputs = f0 cc, output = fc, opcode = 0011, cond x
+#                11000 YAY!! inputs = f0 cc, output = 3c, opcode = 0100, cond x
+#                13000 YAY!! inputs = f0 04, output = 0f, opcode = 0101, cond x
+#                15000 YAY!! inputs = 99 09, output = 00, opcode = 0110, cond x
+#                17000 YAY!! inputs = 99 09, output = 00, opcode = 0111, cond x
+#                19000 YAY!! inputs = 03 05, output = 01, opcode = 1000, cond x
+#                21000 YAY!! inputs = 07 07, output = 01, opcode = 1001, cond 1
+#                23000 YAY!! inputs = 07 07, output = 0e, opcode = 0000, cond 1
+#                25000 YAY!! inputs = 05 03, output = 00, opcode = 1000, cond 1
+#                27000 YAY!! inputs = 03 05, output = 01, opcode = 1000, cond 0
+#                29000 YAY!! inputs = 03 05, output = 00, opcode = 1001, cond 1
+#                31000 YAY!! inputs = 03 05, output = fe, opcode = 0001, cond 0
