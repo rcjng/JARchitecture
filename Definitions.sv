@@ -50,11 +50,11 @@ package Definitions;
        ADD, 
        SUB,
        AND,
-       OR,
+       IOR,
        XOR,
        NOT,
-       LSH,
-       RSH,
+       LSL,
+       LSR,
        SLT,
        SEQ
    } op_mne;

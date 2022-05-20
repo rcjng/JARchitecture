@@ -41,11 +41,11 @@ always_comb begin
     ADD : Out = InputA + InputB;        // add 
     SUB : Out = InputA + (~InputB) + 'b1; // sub
     AND : Out = InputA & InputB;        // bitwise and
-    OR  : Out = InputA | InputB;        // bitwise or
+    IOR : Out = InputA | InputB;        // bitwise or
     NOT : Out = ~InputA;                // bitwise not
     XOR : Out = InputA ^ InputB;        // bitwise xor
-    LSH : Out = InputA << InputB;       // logical shift left
-    RSH : Out = InputA >> InputB;       // logical shift right 
+    LSL : Out = InputA << InputB;       // logical shift left
+    LSR : Out = InputA >> InputB;       // logical shift right 
     SLT : begin                         // set less than
       if (InputA < InputB) begin
         Out = 8'b1;

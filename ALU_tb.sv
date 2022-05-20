@@ -72,7 +72,7 @@ initial begin
 
   INPUTA = 'b11110000;
   INPUTB = 'b11001100;
-  op = 'b0011; // OR
+  op = 'b0011; // IOR
   test_alu_func;
 
   #1 Clk = '1;
@@ -99,7 +99,7 @@ initial begin
 
   INPUTA = 'b10011001;
   INPUTB = 9;
-  op = 'b0110; // LSH
+  op = 'b0110; // LSL
   test_alu_func;
 
   #1 Clk = '1;
@@ -108,7 +108,7 @@ initial begin
 
   INPUTA = 'b10011001;
   INPUTB = 9;
-  op = 'b0111; // RSH
+  op = 'b0111; // LSR
   test_alu_func;
 
   #1 Clk = '1;

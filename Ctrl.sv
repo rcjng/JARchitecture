@@ -103,7 +103,7 @@ always_comb begin
         RegWrEn = 1'b1;   // write result to R0
         AInSel = 2'b1;    // param Rx
         BInSel = 2'b1;    // param R0
-        ALUOp = OR;
+        ALUOp = IOR;
       end
       else if (Instruction[6:3] == 4'b0111) begin
         //xor
@@ -124,14 +124,14 @@ always_comb begin
         RegWrEn = 1'b1; // write result to R0
         AInSel = 2'b1;  // value of rx
         BInSel = 2'b1;  // value of r0
-        ALUOp = LSH;
+        ALUOp = LSL;
       end
       else if (Instruction[6:3] == 4'b1010) begin
         //shift right
         RegWrEn = 1'b1; // write result to R0
         AInSel = 2'b1;  // value of rx
         BInSel = 2'b1;  // value of r0
-        ALUOp = RSH;
+        ALUOp = LSR;
       end
       else if (Instruction[6:3] == 4'b1011) begin
         //setlt

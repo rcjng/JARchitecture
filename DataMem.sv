@@ -31,6 +31,10 @@ always_comb
 // Load the initial contents of memory
 initial begin
   // $readmemh("../data_mem.hex", Core);
+  integer i;
+  for (i=0; i<2**A; i=i+1) begin
+      Core[i] <= '0;
+    end
 end
 
 // writes are sequential

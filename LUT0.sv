@@ -19,22 +19,22 @@ module LUT0(
 always_comb begin
 
   case (Addr)
-    4'b0000: Target = 10'h003; // For testbench, jump to address 3
-    4'b0001: Target = 10'h001;
-    4'b0010: Target = 10'h001;
-    4'b0011: Target = 10'h001;
-    4'b0100: Target = 10'h001;
-    4'b0101: Target = 10'h001;
-    4'b0110: Target = 10'h001;
-    4'b0111: Target = 10'h001;
-    4'b1000: Target = 10'h001; 
-    4'b1001: Target = 10'h001;
-    4'b1010: Target = 10'h001;
-    4'b1011: Target = 10'h001;
-    4'b1100: Target = 10'h001;
-    4'b1101: Target = 10'h001;
-    4'b1110: Target = 10'h001;
-    4'b1111: Target = 10'h001;
+    4'b0000: Target = 10'd288;  // DONE
+    4'b0001: Target = 10'd2;    // LOOP
+    4'b0010: Target = 10'd0;
+    4'b0011: Target = 10'd0;
+    4'b0100: Target = 10'd0;
+    4'b0101: Target = 10'd0;
+    4'b0110: Target = 10'd0;
+    4'b0111: Target = 10'd0;
+    4'b1000: Target = 10'd0;
+    4'b1001: Target = 10'd0;
+    4'b1010: Target = 10'd0;
+    4'b1011: Target = 10'd0;
+    4'b1100: Target = 10'd0;
+    4'b1101: Target = 10'd0;
+    4'b1110: Target = 10'd0;
+    4'b1111: Target = 10'd0;
   endcase
 end
 
