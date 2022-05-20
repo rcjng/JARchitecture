@@ -516,4 +516,4 @@ add $1                          // r0 = i + 2
 mov $1                          // i  = i + 2
 slt $0
 brl 010010                      // brl LOOP   
-hlt                             // halt
+hlt                             // DONE: halt
