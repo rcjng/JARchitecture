@@ -17,9 +17,9 @@ module LUT1(
 always_comb begin
 
   case(Addr)
-    4'b0000: Target = 10'd518; 
-    4'b0001: Target = 10'd501;
-    4'b0010: Target = 10'd2;
+    4'b0000: Target = 10'd518;  // DONE
+    4'b0001: Target = 10'd501;  // COND_DONE
+    4'b0010: Target = 10'd2;    // LOOP
     4'b0011: Target = 10'h001;
     4'b0100: Target = 10'h001;
     4'b0101: Target = 10'h001;
