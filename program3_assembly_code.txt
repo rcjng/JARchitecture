@@ -76,7 +76,7 @@ ldr $0                         	// $0 = data_mem[$0 (i+1)]
 mov $4                         	// $4 = $0
 ldi #4                         	// $0 = 4
 lsr $4                       	// $0 = data_mem[(i+1)] >> 4
-and $5                          // $0 = $0 | $5
+ior $5                          // $0 = $0 | $5
 mov $5                         	// $5 = $0
 ldi #4                         	// WHILE2: $0 = 4
 slt $2                        	// if $2 < $0 then 1 else 0
